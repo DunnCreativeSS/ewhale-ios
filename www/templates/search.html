@@ -1,0 +1,46 @@
+<ion-modal-view style="height:50%;">
+  <ion-header-bar class="bar bar-header bar-positive">
+    <label class="item item-input" style="width: 60%;">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="search" placeholder="{{'SEARCH'|translate}}" ng-model="data.search" ng-change="search()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </label>
+    <label class="item item-input search item-select">
+      <div class="input-label"></div>
+      <select ng-model="data.type" ng-change="typechange()">
+	      	<option value="tag">{{'TAG'|translate}}</option>
+        	<option value="user">{{'USER'|translate}}</option>
+          <option value="posts">{{'POSTS'|translate}}</option>
+	    </select>
+    </label>
+    <div class="buttons">
+      <button class="button button-clear fbold" ng-click="closeSmodal()">{{'CLOSE'|translate}}</button>
+    </div>
+    &nbsp;
+  </ion-header-bar><!--ng-class="{'fullmodal': data.searchResult.length>0, 'halfmodal': data.searchResult.length==0}"-->
+  <ion-content ng-class="{'theme-dark':$root.$storage.theme == 'night'}">
+    <div class="list" ng-if="data.searchResult.length>0">
+      <div ng-if="data.type=='tag'">
+	      <a class="item" ng-repeat="x in data.searchResult" ng-click="openTag(x.name, x.top_posts)">
+	        <h2>{{'TAG'|translate}} - {{x.name}}</h2>
+	        <p>{{'POSTS'|translate}} - {{x.top_posts}}</p>
+	      </a>
+      </div>
+      <div ng-if="data.type=='user'">
+	      <a class="item" ng-repeat="x in data.searchResult" ng-click="openUser(x)">
+	        <h2>{{'USER'|translate}} - {{x}}</h2>
+	      </a>
+      </div>
+      <div ng-if="data.type=='posts'">
+        <div class="list">
+            <a class="item" href ng-repeat="x in data.searchResult" ng-click="open(x)">
+              <!--<img ng-src="{{x.meta.image[0]}}">item-thumbnail-left-->
+              <h2>{{x.title}}</h2>
+              <p>by {{x.author}}</p>
+              <span>{{x.created|timeago}}</span>
+            </a>
+        </div>
+
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

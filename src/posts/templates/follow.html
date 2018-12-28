@@ -1,0 +1,60 @@
+<ion-view view-cache="false">
+   <ion-nav-bar class="bar-positive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side='left'>
+        <button class="button button-icon button-clear" ng-if="!$root.voiceOver" menu-toggle="left">
+         <img ng-if="$root.user" src="https://imgp.whaleshares.io/profileimage/{{$root.user.username}}/128x128" class="headerAvatar" onerror="this.src=\'img/ewhaleshares_white.png\'" onabort="this.src=\'img/ewhaleshares_white.png\'"/>
+          <i ng-if="!$root.user" class="icon ion-navicon"></i> 
+        </button>
+        <a href class="button button-icon ion-more" ng-if="$root.voiceOver" menu-toggle="left">{{::translations.menu}}</a>
+      </ion-nav-buttons>
+      <ion-nav-title>
+        <div class="page-title">{{'FOLLOW' | translate}}</div>
+      </ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="padding has-footer" delegate-handle="listScroll" ng-class="{'theme-dark':$root.$storage.theme == 'night'}">
+    <div class="list list-inset" ng-if="active=='followers'">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" ng-model="searchu.follower" placeholder="{{'SEARCH_FOLLOWERS' | translate}}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model-options="{debounce: 500}">
+      </label>
+    </div>
+    <div class="list list-inset" ng-if="active=='following'">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" ng-model="searchu.following" placeholder="{{'SEARCH_FOLLOWING' | translate}}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" ng-model-options="{debounce: 500}">
+      </label>
+    </div>
+    <div class="list" ng-if="active=='followers' && followers.length>0">
+      <div class="item item-button-right" ng-repeat="f in followers | filter:searchu  track by $index">
+        <span ng-click="profileView(f.follower)">{{f.follower}}</span>
+        <button class="button button-positive button-outline" ng-if="!isFollowed(f.follower)" ng-click="followUser(f.follower)">
+        {{'FOLLOW_BACK' | translate}}
+        </button>
+        <button class="button button-positive" ng-if="isFollowed(f.follower)" ng-click="unfollowUser(f.follower)">
+        {{'FOLLOWED' | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="list" ng-if="active=='following' && following.length>0">
+      <div class="item item-button-right" ng-repeat="f in following | filter:searchu  track by $index">
+        <span ng-click="profileView(f.following)">{{f.following}}</span>
+        <button class="button button-positive button-outline" ng-if="!isFollowing(f.following)" ng-click="unfollowUser(f.following)">
+        {{'UNFOLLOW' | translate}}
+        </button>
+        <button class="button button-positive" ng-if="isFollowing(f.following)">
+        {{'FOLLOWING' | translate}}
+        </button>
+      </div>
+    </div>
+    <!--<ion-infinite-scroll on-infinite="loadMore()" ng-if="lastd" distance="2%"></ion-infinite-scroll>-->
+  </ion-content>
+  <div class="bar profile bar-footer">
+    <div class="button-bar">
+      <a class="button button-large button-royal icon ion-ios-people" ng-class="{'active':active=='followers'}" ng-click="change('followers')"> {{'FOLLOWERS' | translate}} <span ng-if="followers.length>0">({{::followdetails.follower_count}})</span></a>
+      <a class="button button-royal icon ion-person-add" ng-class="{'active':active=='following'}" ng-click="change('following')"> {{'FOLLOWED' | translate}} <span ng-if="following.length>0">({{::followdetails.following_count}})</span></a>
+    </div>
+  </div>
+</ion-view>

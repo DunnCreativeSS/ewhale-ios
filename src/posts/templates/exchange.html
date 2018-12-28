@@ -1,0 +1,93 @@
+<ion-view view-cache="false">
+   <ion-nav-bar class="bar-positive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side='left'>
+        <button class="button button-icon button-clear" ng-if="!$root.voiceOver" menu-toggle="left">
+         <img ng-if="$root.user" src="https://imgp.whaleshares.io/profileimage/{{$root.user.username}}/128x128" class="headerAvatar" onerror="this.src=\'img/ewhaleshares_white.png\'" onabort="this.src=\'img/ewhaleshares_white.png\'"/>
+          <i ng-if="!$root.user" class="icon ion-navicon"></i> 
+        </button>
+        <a href class="button button-icon ion-more" ng-if="$root.voiceOver" menu-toggle="left">{{::translations.menu}}</a>
+      </ion-nav-buttons>
+      <ion-nav-title>
+        <div class="page-title">{{'MARKET_VIEW' | translate}}</div>
+      </ion-nav-title>
+  </ion-nav-bar>
+
+  <ion-content class="padding has-footer exchange" ng-class="{'theme-dark':$root.$storage.theme == 'night'}">
+    <div class="padding" ng-if="active=='buy'||active=='sell'">
+      <highchart id="chart1" config="depth_chart_config"></highchart>  
+    </div>
+    <div class="padding" ng-if="active=='history'">
+      <highchart id="chart2" config="history_chart_config"></highchart>  
+    </div>
+    <div class="" ng-if="active=='buy'">
+      <div class="row header">
+        <div class="col">{{'PRICE' | translate}}</div>
+        <div class="col">{{'AMOUNT' | translate}}</div>
+        <div class="col">{{'TOTAL' | translate}}</div>
+      </div>
+      <div class="row" ng-repeat="(key, f) in orders.bids">
+        <div class="col">{{f.real_price|number:4}}</div>
+        <div class="col">{{f.order_price.quote}}</div>
+        <div class="col">{{f.order_price.base}}</div>
+      </div>
+    </div>
+    <div class="" ng-if="active=='sell'">
+      <div class="row header">
+        <div class="col">{{'PRICE' | translate}}</div>
+        <div class="col">{{'AMOUNT' | translate}}</div>
+        <div class="col">{{'TOTAL' | translate}}</div>
+      </div>
+      <div class="row" ng-repeat="(key, f) in orders.asks">
+        <div class="col">{{f.real_price|number:4}}</div>
+        <div class="col">{{f.order_price.quote}}</div>
+        <div class="col">{{f.order_price.base}}</div>
+      </div>
+    </div>
+    <div class="" ng-if="active=='open'">
+      <p class="padding" ng-if="openorders.length<1">
+        {{'NOORDERS' | translate}} @{{username}}
+      </p>
+      <div ng-if="openorders.length>0">
+        <div class="row header">
+          <div class="col">{{'PRICE' | translate}}</div>
+          <div class="col">{{'AMOUNT' | translate}}</div>
+          <div class="col">{{'TOTAL' | translate}}</div>
+        </div>
+        <div class="row" ng-repeat="(key, f) in openorders">
+          <div class="col">{{f.real_price|number:4}}</div>
+          <div class="col" ng-if="f.seller==$root.user.username">{{f.sell_price.quote}}</div>
+          <div class="col" ng-if="f.seller==$root.user.username">{{f.sell_price.base}}</div>
+          <div class="col" ng-if="f.buyer==$root.user.username">{{f.buy_price.quote}}</div>
+          <div class="col" ng-if="f.buyer==$root.user.username">{{f.buy_price.base}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="" ng-if="active=='history'">
+      <!--<p class="padding">Nothing here, yet...</p>-->
+      <div ng-if="recent_trades.length>0">
+        <div class="row header">
+          <div class="col">{{'DATE' | translate}}</div>
+          <div class="col">{{'PRICE' | translate}}</div>
+          <div class="col">{{$root.$storage.platformsunit}}</div>
+          <div class="col">{{$root.$storage.platformdollar}}</div>
+        </div>
+        <div class="row" ng-repeat="(key, f) in recent_trades">
+          <div class="col">{{f.date|timeago}}</div>
+          <div class="col">{{f.current_pays.split(" ")[0]/f.open_pays.split(" ")[0]|number:6}}</div>
+          <div class="col">{{f.current_pays.split(" ")[0]|number:3}}</div>
+          <div class="col">{{f.open_pays.split(" ")[0]|number:3}}</div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <div class="profile bar bar-footer">
+    <div class="button-bar">
+      <a class="button button-large button-royal icon ion-arrow-down-a" ng-class="{'active':active=='buy'}" ng-click="change('buy')"> {{'BUY' | translate}}</a>
+      <a class="button button-royal icon ion-arrow-up-a" ng-class="{'active':active=='sell'}" ng-click="change('sell')"> {{'SELL' | translate}}</a>
+      <a class="button button-royal icon ion-flag" ng-class="{'active':active=='open'}" ng-click="change('open')">{{'OPEN' | translate}}</a>
+      <a class="button button-royal icon ion-ios-clock" ng-class="{'active':active=='history'}"  ng-click="change('history')">{{'HISTORY' | translate}}</a>
+    </div>
+  </div>
+</ion-view>

@@ -1,0 +1,31 @@
+<ion-view>
+   <ion-nav-bar class="bar-positive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side='left'>
+        <button class="button button-icon button-clear" ng-if="!$root.voiceOver" menu-toggle="left">
+         <img ng-if="$root.user" src="https://imgp.whaleshares.io/profileimage/{{$root.user.username}}/128x128" class="headerAvatar" onerror="this.src=\'img/ewhaleshares_white.png\'" onabort="this.src=\'img/ewhaleshares_white.png\'"/>
+          <i ng-if="!$root.user" class="icon ion-navicon"></i> 
+        </button>
+        <a href class="button button-icon ion-more" ng-if="$root.voiceOver" menu-toggle="left">{{::translations.menu}}</a>
+      </ion-nav-buttons>
+      <ion-nav-title>
+        <div class="page-title">{{'BOOKMARKS' | translate}}</div>
+      </ion-nav-title>
+  </ion-nav-bar>
+  <ion-content class="has-header" ng-class="{'theme-dark':$root.$storage.theme == 'night'}">
+	<ion-list ng-if="$root.$storage.bookmark" can-swipe="true">
+  		<ion-item ng-repeat="item in $root.$storage.bookmark | orderBy:'-timestamp'" ng-click="$root.getContentAndOpen(item)" ng-if="item" class='item-avatar'>
+        <img ng-src="https://imgp.whaleshares.io/profileimage/{{item.author}}/128x128" onerror="this.src=\'img/logo.png\'" onabort="this.src=\'img/logo.png\'"/>
+		    <p><h2>{{item.author}}</h2></p>
+        <p>{{item.permlink}}</p>
+		    <div class="row postdetails twrap"><div class="col"><i class="icon ion-android-time"></i> {{item.timestamp|timeago}}</div></div>
+		    <ion-option-button class="button-assertive" ng-click="removeBookmark(item._id)">{{'REMOVE' | translate}}
+		    </ion-option-button>
+    	</ion-item>
+    </ion-list>
+    <p class="tcenter gray padding" ng-if="$root.$storage.bookmark.length>0">{{'SWIPE_LEFT'|translate}}</p>
+    <p class="tcenter gray padding" ng-if="$root.$storage.bookmark.length==0">{{'NOTHING_HERE'|translate}}</p>
+
+  </ion-content>
+</ion-view>

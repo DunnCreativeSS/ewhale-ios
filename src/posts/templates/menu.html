@@ -1,0 +1,129 @@
+<ion-side-menus enable-menu-with-back-views="true" view-cache="false">
+  <ion-side-menu-content drag-content="true">
+    <ion-nav-bar class="bar-positive">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+  <ion-side-menu side="left">
+    <!--<ion-header-bar class="bar-positive" ng-if="!$root.$storage.user">
+      <h1 class="title center">WhalesApp</h1>
+    </ion-header-bar>-->
+    <ion-content>
+      <div ng-if="!$root.user" class="exceptmenu">
+        <center>
+          <p>
+            <img ng-src="img/ewhaleshares.png" width="150" />
+          </p>
+        </center>
+      </div>
+      <div ng-if="$root.user" class="exceptmenu" ng-style="mcss">
+      <br>
+        <center>
+          <a menu-close href="#/app/profile/{{$root.user.username}}" class="item-myavatar" ng-if="$root.user">
+            <span class="item-myavatar" ng-if="!$root.user.json_metadata.user_image && !$root.user.json_metadata.profile.profile_image"><img ng-src="img/user_profile.png"></span>
+            <img ion-img-cache ng-src="{{$root.user.json_metadata.profile.profile_image || $root.user.json_metadata.user_image}}" ng-if="$root.user.json_metadata.user_image || $root.user.json_metadata.profile.profile_image" />
+          </a>
+          <div>
+            <div class="h4">@{{$root.user.username}}&nbsp;</div>
+            <div ng-click="showMeExtra()" class="padding"><i class="icon ion-android-list"></i>&nbsp;{{$root.user.post_count}}&nbsp;&nbsp;<i class="icon ion-arrow-graph-up-right"></i>&nbsp;{{$root.user.voting_power/100|number:2}} <i class="icon pull-right" ng-class="{'ion-arrow-down-b':!showExtra, 'ion-arrow-up-b':showExtra}"></i></div>
+          </div>
+        </center>
+      </div>
+      <div ng-if="showExtra" class="extra-menu" ng-class="{'theme-dark':$root.$storage.theme == 'night'}">
+        <ion-list>
+          <ion-item menu-close class="item-borderless item-icon-left" ng-if="$root.$storage.users" ng-repeat="user in $root.$storage.users" href ng-click="selectAccount(user)" ng-class="{'active': (user.username==$root.user.username&&user.chain==$root.$storage.user.chain) }">
+            <img class="icon logos" ng-src="https://imgp.whaleshares.io/profileimage/{{user.username}}/128x128" />
+            {{user.username}}
+            <!--<span class="badge badge-assertive">{{user.chain}}</span>-->
+          </ion-item>
+          <ion-item menu-close href ng-click="openLogin()" class="item-borderless item-icon-left" ng-if="$root.user">
+            <i class="icon ion-plus-round"></i>
+            {{'ADD_ACCOUNT'|translate}}
+          </ion-item>
+          <ion-item menu-close href ng-click="openPostModal()" class="item-borderless item-icon-left" ng-if="$root.user">
+            <i class="icon ion-android-create"></i>
+            {{'SUBMIT_A_STORY'|translate}}
+          </ion-item>
+          <ion-item menu-close href="#/app/follow" class="item-borderless item-icon-left" ng-if="$root.user">
+            <i class="icon ion-person-stalker"></i>
+            {{'FOLLOW'|translate}}
+          </ion-item>
+          <ion-item menu-close href ng-click="logout()" ng-if="$root.user" class="item-borderless item-icon-left">
+            <i class="icon ion-log-out"></i>
+            {{'LOGOUT'|translate}}
+          </ion-item>
+        </ion-list>
+      </div>
+      <ion-list ng-class="{'theme-dark':$root.$storage.theme == 'night'}" class='mainMenu'>
+        <ion-item menu-close ng-click="openLogin()" class="item-borderless item-icon-left" ng-if="!$root.user">
+          <i class="icon ion-log-in"></i>
+          {{'LOGIN'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/posts/" class="item-borderless item-icon-left">
+          <i class="icon ion-home"></i>
+          {{'HOME'|translate}}
+        </ion-item>
+        <!--<ion-item menu-close href="#/app/notifications" class="item-icon-left" ng-if="$root.$storage.notifications && $root.$storage.notifications.length>0">
+          <i class="icon ion-bookmark"></i>
+          {{'NOTIFICATIONS'|translate}}
+        </ion-item>-->
+        <ion-item menu-close href="#/app/profile/{{$root.user.username}}" class="item-borderless item-icon-left" ng-if="$root.user">
+            <i class="icon ion-person"></i>
+            {{'PROFILE'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/bookmark" class="item-borderless item-icon-left" ng-if="$root.user">
+          <i class="icon ion-bookmark"></i>
+          {{'BOOKMARKS'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/drafts" ng-if="$root.user" class="item-borderless item-icon-left">
+          <i class="icon ion-compose"></i>
+          {{'DRAFTS'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/favorites" class="item-borderless item-icon-left" ng-if="$root.user">
+          <i class="icon ion-heart"></i>
+          {{'FAVORITES'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/schedules" ng-if="$root.user" class="item-borderless item-icon-left">
+          <i class="icon ion-clock"></i>
+          {{'SCHEDULES'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/send" class="item-borderless item-icon-left" ng-if="$root.user">
+          <i class="icon ion-android-send"></i>
+          {{'TRANSFER'|translate}}
+        </ion-item><!--
+        <ion-item menu-close href="#/app/exchange/{{$root.user.username}}" class="item-borderless item-icon-left" ng-if="$root.user">
+          <i class="icon ion-arrow-swap"></i>
+          {{'EXCHANGE'|translate}}
+        </ion-item>--!><!--
+        <ion-item menu-close href="#/app/market" class="item-borderless item-icon-left">
+          <i class="icon ion-cube"></i>
+          {{'MARKETPLACE'|translate}}
+        </ion-item> --!>
+        <ion-item menu-close href="#/app/settings" class="item-borderless item-icon-left">
+          <i class="icon ion-android-settings"></i>
+          {{'SETTINGS'|translate}}
+        </ion-item>
+        <ion-item menu-close href="#/app/post/ewhaleshares/swapbit/ewhaleshares-faq-updated-e2baacf0a8475" class="item-borderless item-icon-left">
+          <i class="icon ion-help"></i>
+          FAQ
+        </ion-item>
+        <ion-item menu-close href="#/app/about" class="item-borderless item-icon-left">
+          <i class="icon ion-information"></i>
+          {{'ABOUT'|translate}}
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <!-- align to the bottom of the page -->
+    <div style="position: absolute; bottom: 0px; width: 100%">
+        <div style="text-align: center; color:#ccc;">
+          <p>{{$root.$storage.appversion}}</p>
+        </div>
+    </div>
+  </ion-side-menu>
+</ion-side-menus>

@@ -1,0 +1,8 @@
+{
+  "name": "ewhale",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ]
+}

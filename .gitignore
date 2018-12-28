@@ -1,0 +1,14 @@
+backend/nohup.out
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+node_modules
+google-services.json
+GoogleService-Info.plist
+bower_components/
+platforms/
+plugins/
+res/
+temp/
+config.js
+resources/*.xcf

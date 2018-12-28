@@ -1,0 +1,19 @@
+{ 
+	"whalesharesd" : [
+		"ws://188.166.99.136:8090", 
+		"https://rpc.ewhaleshares.ws",
+		"https://rpc.whalesharesviz.com",
+		"https://rpc.buildteam.io",
+		"https://gtg.whaleshares.house:8090", 
+		"https://whalesharesd.pevo.science", 
+		"https://whalesharesd.whalesharesitstage.com",
+		"https://whalesharesd.previx.io:8090", 
+		"https://seed.bitcoiner.me", 
+		"https://rpc.whalesharesliberator.com",
+		"https://whalesharesd.minnowsupportproject.org"
+	], 
+	"golosd" : [
+		"https://ws.golos.io",
+		"https://node.golos.ws"
+	] 
+}

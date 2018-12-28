@@ -1,0 +1,19 @@
+{
+  "name": "iapp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic1",
+  "watchPatterns": [
+    "scss/**/*",
+    "www/**/*",
+    "!www/lib/**/*",
+    "!www/**/*.map"
+  ],
+  "proxies": [
+    {
+      "path": "/nodes",
+      "proxyUrl": "https://storage.googleapis.com/ewhaleshares/nodes.json"
+    }
+  ]
+}
